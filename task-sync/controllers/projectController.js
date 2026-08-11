@@ -3,7 +3,7 @@ const db = require("../models/connection.js");
 // 1. Create a Project (Using PostgreSQL Transaction)
 const createProject = async (req, res) => {
   const { title, description } = req.body;
-  const userId = req.user.id;
+  const userId = parseInt(req.user.id, 10);
 
   if (!title) {
     return res.status(400).json({
