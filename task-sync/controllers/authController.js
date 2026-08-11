@@ -14,7 +14,6 @@ const registerUser = async (req, res) => {
   }
 
   try {
-    // Check if user already exists
     const checkUserQuery = `SELECT * FROM users WHERE email = $1 OR username = $2;`;
     const existingUser = await db.query(checkUserQuery, [email, username]);
 
@@ -25,7 +24,6 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 

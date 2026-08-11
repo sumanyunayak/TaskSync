@@ -7,6 +7,14 @@ const initDatabase = async () => {
     const result = await query("SELECT current_database();");
     console.log("Connected to:", result.rows[0].current_database);
 
+    // Drop tables if they exist (Uncomment during initial dev reset)
+    await query("DROP TABLE IF EXISTS task_history CASCADE;");
+    await query("DROP TABLE IF EXISTS activity_logs CASCADE;");
+    await query("DROP TABLE IF EXISTS tasks CASCADE;");
+    await query("DROP TABLE IF EXISTS project_members CASCADE;");
+    await query("DROP TABLE IF EXISTS projects CASCADE;");
+    await query("DROP TABLE IF EXISTS users CASCADE;");
+
     // 1. Users Table
     const createUsersTable = `
       CREATE TABLE IF NOT EXISTS users (
@@ -35,7 +43,7 @@ const initDatabase = async () => {
         id SERIAL PRIMARY KEY,
         project_id INT REFERENCES projects(id) ON DELETE CASCADE,
         user_id INT REFERENCES users(id) ON DELETE CASCADE,
-        role VARCHAR(50) DEFAULT 'Member', -- 'Admin' or 'Member'
+        role VARCHAR(50) DEFAULT 'Member',
         joined_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(project_id, user_id)
       );
@@ -47,7 +55,7 @@ const initDatabase = async () => {
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         description TEXT,
-        status VARCHAR(50) DEFAULT 'To Do', -- 'To Do', 'In Progress', 'Done'
+        status VARCHAR(50) DEFAULT 'To Do',
         project_id INT REFERENCES projects(id) ON DELETE CASCADE,
         assigned_to INT REFERENCES users(id) ON DELETE SET NULL,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -86,7 +94,7 @@ const initDatabase = async () => {
     await query(createActivityLogsTable);
     await query(createTaskHistoryTable);
 
-    console.log("All tables created successfully");
+    console.log("All tables recreated successfully with correct columns!");
   } catch (error) {
     console.error("Error creating tables:", error);
     process.exit(1);
