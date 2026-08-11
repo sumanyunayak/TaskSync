@@ -32,13 +32,14 @@ const authenticateUser = (req, res, next) => {
 
 // 2. Verify Project Membership Middleware
 const authorizeProjectMember = async (req, res, next) => {
-  const projectId = req.params.projectId || req.params.id || req.body.project_id;
+  const rawId = req.params.projectId || req.params.id || req.body.project_id;
+  const projectId = parseInt(rawId, 10);
   const userId = req.user.id;
 
-  if (!projectId) {
+  if (isNaN(projectId)) {
     return res.status(400).json({
       status: "Failed",
-      message: "Project ID is required for authorization.",
+      message: "Invalid Project ID format.",
     });
   }
 
