@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const { initDatabase } = require("./controllers/initDB");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
+app.use("/api/auth", authRoutes);
 
 // Initialize Database Schema
 initDatabase();
