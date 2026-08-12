@@ -41,59 +41,84 @@ export default function AuthPage({ onLoginSuccess }) {
 
   return (
     <div className="form-card">
-      <h2>{isLogin ? 'Login to TaskSync' : 'Create an Account'}</h2>
-      {error && <p style={{ color: 'red', marginTop: '0.5rem', fontSize: '0.85rem' }}>{error}</p>}
-      
-      <form onSubmit={handleSubmit} style={{ marginTop: '1.2rem' }}>
-        {!isLogin && (
+      <div className="panel-head">
+        <span className="head-dot"></span>
+        <span>{isLogin ? 'Member Access' : 'New Registration'}</span>
+        <span className="spacer"></span>
+        <span className="head-idx">{isLogin ? '// 01' : '// 02'}</span>
+      </div>
+
+      <div className="panel-body">
+        <p className="form-copy">
+          {isLogin
+            ? 'Sign in to enter your TASKSYNC workspace.'
+            : 'Stand up a new identity and start shipping.'}
+        </p>
+
+        {error && (
+          <p className={error.includes('successful') ? 'form-success' : 'form-error'} role="alert">
+            {error}
+          </p>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div className="form-group">
+              <label className="label" htmlFor="username">Username</label>
+              <input
+                className="field"
+                id="username"
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          )}
+
           <div className="form-group">
-            <label>Username</label>
+            <label className="label" htmlFor="email">Email Address</label>
             <input
-              type="text"
-              name="username"
-              value={formData.username}
+              className="field"
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
-        )}
 
-        <div className="form-group">
-          <label>Email Address</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label className="label" htmlFor="password">Password</label>
+            <input
+              className="field"
+              id="password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          <button type="submit" className="btn btn--primary btn--block">
+            {isLogin ? 'Login' : 'Register'}
+          </button>
+        </form>
 
-        <button type="submit" className="btn-primary">
-          {isLogin ? 'Login' : 'Register'}
-        </button>
-      </form>
-
-      <p style={{ marginTop: '1rem', fontSize: '0.85rem', textAlign: 'center' }}>
-        {isLogin ? "Don't have an account? " : 'Already registered? '}
-        <span
-          style={{ color: '#2563eb', cursor: 'pointer', fontWeight: 500 }}
-          onClick={() => { setIsLogin(!isLogin); setError(''); }}
-        >
-          {isLogin ? 'Register here' : 'Login here'}
-        </span>
-      </p>
+        <p className="form-footer">
+          {isLogin ? "Don't have an account? " : 'Already registered? '}
+          <button
+            type="button"
+            className="link"
+            onClick={() => { setIsLogin(!isLogin); setError(''); }}
+          >
+            {isLogin ? 'Register here' : 'Login here'}
+          </button>
+        </p>
+      </div>
     </div>
   );
 }

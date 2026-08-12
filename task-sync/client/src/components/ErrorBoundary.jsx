@@ -17,16 +17,24 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h2>Something went wrong in the workspace.</h2>
-          <p style={{ color: '#dc2626', marginTop: '0.5rem' }}>{this.state.error?.toString()}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="btn-primary" 
-            style={{ width: 'auto', marginTop: '1rem' }}
-          >
-            Reload Page
-          </button>
+        <div className="main-content" style={{ textAlign: 'center' }}>
+          <div className="panel" style={{ maxWidth: '520px', margin: '3rem auto' }}>
+            <div className="panel-head">
+              <span className="head-dot"></span>
+              <span>Workspace Error</span>
+            </div>
+            <div className="panel-body">
+              <h2 style={{ textTransform: 'uppercase', marginBottom: '0.5rem' }}>Something went wrong in the workspace.</h2>
+              <p className="task-desc">{this.state.error?.toString()}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="btn btn--primary"
+                type="button"
+              >
+                Reload Page
+              </button>
+            </div>
+          </div>
         </div>
       );
     }

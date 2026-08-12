@@ -48,59 +48,73 @@ export default function Dashboard({ onSelectProject }) {
 
   return (
     <div>
-      <h2>Your Workspace Projects</h2>
-      
+      <p className="kicker">Project Directory</p>
+      <h2 className="page-title">Your Workspace Projects</h2>
+
       {/* Create Project Form */}
-      <div style={{ background: '#fff', padding: '1rem', borderRadius: '8px', margin: '1rem 0' }}>
-        <h3>Create New Project</h3>
-        <form onSubmit={handleCreateProject} style={{ display: 'flex', gap: '1rem', marginTop: '0.8rem' }}>
-          <input
-            type="text"
-            placeholder="Project Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{ flex: 1, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Description (optional)"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            style={{ flex: 2, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-          />
-          <button type="submit" className="btn-primary" style={{ width: 'auto' }}>
-            + Create
-          </button>
-        </form>
+      <div className="panel create-panel">
+        <div className="panel-head">
+          <span className="head-dot"></span>
+          <span>Create New Project</span>
+          <span className="spacer"></span>
+          <span className="head-idx">// NEW</span>
+        </div>
+        <div className="panel-body">
+          <form onSubmit={handleCreateProject} className="create-row">
+            <div>
+              <label className="label" htmlFor="proj-title">Project Title</label>
+              <input
+                className="field"
+                id="proj-title"
+                type="text"
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label className="label" htmlFor="proj-desc">Description</label>
+              <input
+                className="field"
+                id="proj-desc"
+                type="text"
+                placeholder="Optional"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="btn btn--primary">
+              + Create
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* Projects List */}
       {loading ? (
-        <p>Loading projects...</p>
+        <div className="loading-state">
+          <span className="blink"></span>
+          Loading projects...
+        </div>
       ) : projects.length === 0 ? (
-        <p>No projects found. Create one above!</p>
+        <div className="empty-state">
+          No projects found. Create one above.
+        </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+        <div className="project-grid">
           {projects.map((project) => (
             <div
               key={project.id}
+              className="project-card"
               onClick={() => onSelectProject(project)}
-              style={{
-                background: '#fff',
-                padding: '1.2rem',
-                borderRadius: '8px',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                cursor: 'pointer',
-                borderLeft: '4px solid #2563eb'
-              }}
             >
               <h3>{project.title}</h3>
-              <p style={{ color: '#64748b', fontSize: '0.85rem', margin: '0.5rem 0' }}>
+              <p className="project-desc">
                 {project.description || 'No description provided.'}
               </p>
-              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-                Role: <strong>{project.role}</strong>
+              <div className="project-meta">
+                <span className="tag tag--black">Role: {project.role}</span>
               </div>
             </div>
           ))}

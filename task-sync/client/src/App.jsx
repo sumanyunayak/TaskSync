@@ -21,16 +21,25 @@ export default function App() {
     <div className="app-container">
       {/* Navigation Header */}
       <nav className="navbar">
-        <h1>TaskSync Workspace</h1>
+        <div className="brand">
+          <span className="brand-mark">TS</span>
+          <h1 className="brand-name">TaskSync</h1>
+          <span className="brand-sub">collab workspace</span>
+        </div>
         {user && (
-          <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ fontSize: '0.9rem' }}>Welcome, <strong>{user.username}</strong></span>
+          <div className="nav-links">
+            <span className="nav-user">
+              <span className="nav-user-lbl">Operator</span>
+              {user.username}
+            </span>
             {selectedProject && (
-              <button onClick={() => setSelectedProject(null)}>
-                &larr; Back to Dashboard
+              <button className="nav-btn" onClick={() => setSelectedProject(null)}>
+                &larr; Dashboard
               </button>
             )}
-            <button onClick={handleLogout}>Logout</button>
+            <button className="nav-btn nav-btn--danger" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
         )}
       </nav>
