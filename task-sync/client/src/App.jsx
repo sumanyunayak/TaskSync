@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
+import Workspace from './pages/Workspace'; 
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -41,13 +42,7 @@ export default function App() {
         ) : !selectedProject ? (
           <Dashboard onSelectProject={(project) => setSelectedProject(project)} />
         ) : (
-          <div>
-            <h2>Project: {selectedProject.title}</h2>
-            <p style={{ color: '#64748b' }}>{selectedProject.description}</p>
-            <div style={{ marginTop: '2rem', padding: '1rem', background: '#fff', borderRadius: '8px' }}>
-              <p>Kanban Workspace coming in Phase 7!</p>
-            </div>
-          </div>
+          <Workspace project={selectedProject} /> 
         )}
       </main>
     </div>
