@@ -7,14 +7,6 @@ const initDatabase = async () => {
     const result = await query("SELECT current_database();");
     console.log("Connected to:", result.rows[0].current_database);
 
-    // Drop tables if they exist (Uncomment during initial dev reset)
-    await query("DROP TABLE IF EXISTS task_history CASCADE;");
-    await query("DROP TABLE IF EXISTS activity_logs CASCADE;");
-    await query("DROP TABLE IF EXISTS tasks CASCADE;");
-    await query("DROP TABLE IF EXISTS project_members CASCADE;");
-    await query("DROP TABLE IF EXISTS projects CASCADE;");
-    await query("DROP TABLE IF EXISTS users CASCADE;");
-
     // 1. Users Table
     const createUsersTable = `
       CREATE TABLE IF NOT EXISTS users (
