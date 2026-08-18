@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 export default function Dashboard({ onSelectProject }) {
   const [projects, setProjects] = useState([]);
   const [title, setTitle] = useState('');
@@ -8,7 +10,7 @@ export default function Dashboard({ onSelectProject }) {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch('/api/projects');
+      const res = await fetch(`${API_BASE}/api/projects`, { credentials: 'include' });
       const data = await res.json();
       if (data.status === 'Success') {
         setProjects(data.data);
@@ -29,9 +31,10 @@ export default function Dashboard({ onSelectProject }) {
     if (!title) return;
 
     try {
-      const res = await fetch('/api/projects', {
+      const res = await fetch(`${API_BASE}/api/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ title, description }),
       });
       const data = await res.json();

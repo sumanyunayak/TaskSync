@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 const COLUMN_CLASS = {
   'To Do': 'kanban-column--todo',
   'In Progress': 'kanban-column--progress',
@@ -30,12 +32,12 @@ export default function Workspace({ project }) {
   // Fetch All Workspace Data
   const fetchTasks = async () => {
     try {
-      let query = `/api/tasks/project/${project.id}?`;
+      let query = `${API_BASE}/api/tasks/project/${project.id}?`;
       if (search) query += `search=${encodeURIComponent(search)}&`;
       if (statusFilter) query += `status=${encodeURIComponent(statusFilter)}&`;
       if (assigneeFilter) query += `assigned_to=${encodeURIComponent(assigneeFilter)}&`;
 
-      const res = await fetch(query);
+      const res = await fetch(query, { credentials: 'include' });
       const data = await res.json();
       if (data.status === 'Success') setTasks(data.data);
     } catch (err) {
@@ -46,12 +48,12 @@ export default function Workspace({ project }) {
   const fetchMembersAndWorkload = async () => {
     try {
       // Get Members
-      const memRes = await fetch(`/api/projects/${project.id}/members`);
+      const memRes = await fetch(`${API_BASE}/api/projects/${project.id}/members`, { credentials: 'include' });
       const memData = await memRes.json();
       if (memData.status === 'Success') setMembers(memData.data);
 
       // Get Workload Recommendation
-      const workRes = await fetch(`/api/tasks/project/${project.id}/workload`);
+      const workRes = await fetch(`${API_BASE}/api/tasks/project/${project.id}/workload`, { credentials: 'include' });
       const workData = await workRes.json();
       if (workData.status === 'Success') {
         setRecommendedMember(workData.data.recommended_member);
@@ -63,7 +65,7 @@ export default function Workspace({ project }) {
 
   const fetchDashboardData = async () => {
     try {
-      const res = await fetch(`/api/tasks/project/${project.id}/dashboard`);
+      const res = await fetch(`${API_BASE}/api/tasks/project/${project.id}/dashboard`, { credentials: 'include' });
       const data = await res.json();
       if (data.status === 'Success') {
         setProgress(data.data.progress_percentage);
@@ -89,9 +91,10 @@ export default function Workspace({ project }) {
     if (!newTitle) return;
 
     try {
-      const res = await fetch(`/api/tasks/project/${project.id}`, {
+      const res = await fetch(`${API_BASE}/api/tasks/project/${project.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           title: newTitle,
           description: newDesc,
@@ -119,9 +122,10 @@ export default function Workspace({ project }) {
     if (!inviteEmail) return;
 
     try {
-      const res = await fetch(`/api/projects/${project.id}/invite`, {
+      const res = await fetch(`${API_BASE}/api/projects/${project.id}/invite`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email: inviteEmail }),
       });
       const data = await res.json();
@@ -154,9 +158,10 @@ export default function Workspace({ project }) {
     );
 
     try {
-      const res = await fetch(`/api/tasks/${taskId}`, {
+      const res = await fetch(`${API_BASE}/api/tasks/${taskId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ status: newStatus }),
       });
 

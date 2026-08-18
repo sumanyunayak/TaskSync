@@ -3,13 +3,15 @@ import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import Workspace from './pages/Workspace'; 
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST', credentials: 'include' });
       setUser(null);
       setSelectedProject(null);
     } catch (err) {
