@@ -133,3 +133,10 @@ module.exports = {
   loginUser,
   logoutUser,
 };
+
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production", // Require HTTPS in prod
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 24 * 60 * 60 * 1000,
+});

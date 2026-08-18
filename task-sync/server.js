@@ -10,6 +10,15 @@ const taskRoutes = require("./routes/taskRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    credentials: true, // Allows HttpOnly cookies across origins
+  })
+);
+
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
