@@ -91,15 +91,17 @@ const loginUser = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, username: user.username, email: user.email },
       process.env.JWT_SECRET || "default_secret",
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     // Set HttpOnly Cookie
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      secure: process.env.NODE_ENV === "production", // Require HTTPS in prod
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
     });
-
+    
     res.status(200).json({
       status: "Success",
       message: "Logged in successfully",
@@ -133,10 +135,3 @@ module.exports = {
   loginUser,
   logoutUser,
 };
-
-res.cookie("token", token, {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // Require HTTPS in prod
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-  maxAge: 24 * 60 * 60 * 1000,
-});
